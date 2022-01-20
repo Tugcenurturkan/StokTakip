@@ -35,7 +35,7 @@ namespace StokTakip.Mvc
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Dashboard}/{id?}");
+                    pattern: "{controller=UserAccount}/{action=Login}/{id?}");
             });
         }
     }
