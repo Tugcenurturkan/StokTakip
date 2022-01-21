@@ -10,7 +10,6 @@ namespace StokTakip.Shared.Data.Abstract
 {
     public interface IEntityRepository<T> where T:class, IEntity, new()
     {
-        //metotları async oluşturuldu ama sonrasısnda async olmadan kullanacağım bi problem olursa async yaparım yoksa metot isimleri değiştir mutlaka async kısımlarını sil kafa karıştırma
         Task<T> GetAsync(Expression<Func<T,bool>> predicate, params Expression<Func<T,object>>[] includeProperties);
         Task<IList<T>> GetAllAsync(Expression<Func<T, bool>> predicate = null, params Expression<Func<T, object>>[] includeProperties);
         Task AddAsync(T entity);
