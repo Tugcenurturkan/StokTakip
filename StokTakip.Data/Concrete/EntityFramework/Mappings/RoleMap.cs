@@ -13,21 +13,46 @@ namespace StokTakip.Data.Concrete.EntityFramework.Mappings
     {
         public void Configure(EntityTypeBuilder<Role> builder)
         {
-            builder.HasKey(x => x.ID);
-            builder.Property(x => x.ID).ValueGeneratedOnAdd();
-            builder.Property(x => x.RoleName).HasMaxLength(30);
-            builder.Property(x => x.RoleName).IsRequired();
-            builder.Property(x => x.RoleDescription).HasMaxLength(100);
-            builder.Property(x => x.RoleDescription).IsRequired();
-            builder.Property(x => x.CreatedUserId).HasMaxLength(100);
-            builder.Property(x => x.CreatedUserId).IsRequired();
-            builder.Property(x => x.ModifiedUserId).HasMaxLength(100);
-            builder.Property(x => x.ModifiedUserId).IsRequired();
-            builder.Property(x => x.CreatedTime).IsRequired();
-            builder.Property(x => x.ModifiedTime).IsRequired();
-            builder.Property(x => x.IsActive).IsRequired();
-            builder.Property(x => x.IsDeleted).IsRequired();
-            builder.ToTable("Role");
+            // Primary key
+            builder.HasKey(r => r.Id);
+
+            // Index for "normalized" role name to allow efficient lookups
+            builder.HasIndex(r => r.NormalizedName).HasDatabaseName("RoleNameIndex").IsUnique();
+
+            // Maps to the AspNetRoles table
+            builder.ToTable("AspNetRoles");
+
+            // A concurrency token for use with the optimistic concurrency checking
+            builder.Property(r => r.ConcurrencyStamp).IsConcurrencyToken();
+
+            // Limit the size of columns to use efficient database types
+            builder.Property(u => u.Name).HasMaxLength(100);
+            builder.Property(u => u.NormalizedName).HasMaxLength(100);
+
+            // The relationships between Role and other entity types
+            // Note that these relationships are configured with no navigation properties
+
+            // Each Role can have many entries in the UserRole join table
+            builder.HasMany<UserRole>().WithOne().HasForeignKey(ur => ur.RoleId).IsRequired();
+
+            // Each Role can have many associated RoleClaims
+            builder.HasMany<RoleClaim>().WithOne().HasForeignKey(rc => rc.RoleId).IsRequired();
+
+            builder.HasData(new Role
+            {
+                Id = new Guid("81a70626-67ca-4266-93c7-1ae06516ba59"),
+                Name = "Sistem Yöneticisi",
+                NormalizedName = "SISTEM YONETICISI",
+                ConcurrencyStamp = Guid.NewGuid().ToString()
+            },
+            new Role
+            {
+                Id = new Guid("ecaf6ccb-a52b-47f2-802d-f14e940e9155"),
+                Name = "Kullanıcı",
+                NormalizedName = "KULLANICI",
+                ConcurrencyStamp = Guid.NewGuid().ToString()
+            }
+            );
         }
     }
 }

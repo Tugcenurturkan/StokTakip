@@ -14,23 +14,15 @@ namespace StokTakip.Data.Concrete
         private readonly StokTakipContext _context;
         private EfProductDefinitionRepository _productDefinitionRepository;
         private EfProductTypeRepository _productTypeRepository;
-        private EfRoleRepository _roleRepository;
-        private EfUserRepository _userRepository;
-        public UnitOfWork(StokTakipContext context, EfProductDefinitionRepository productDefinitionRepository, EfProductTypeRepository productTypeRepository, EfRoleRepository roleRepository, EfUserRepository userRepository)
+        public UnitOfWork(StokTakipContext context, EfProductDefinitionRepository productDefinitionRepository, EfProductTypeRepository productTypeRepository)
         {
             _context = context;
             _productDefinitionRepository = productDefinitionRepository;
             _productTypeRepository = productTypeRepository;
-            _roleRepository = roleRepository;
-            _userRepository = userRepository;
         }
         public IProductDefinitionRepository ProductDefinitions => _productDefinitionRepository ?? new EfProductDefinitionRepository(_context);
 
         public IProductTypeRepository ProductTypes => _productTypeRepository ?? new EfProductTypeRepository(_context);
-
-        public IRoleRepository Roles => _roleRepository ?? new EfRoleRepository(_context);
-
-        public IUserRepository Users => _userRepository ?? new EfUserRepository(_context);
 
         public async ValueTask DisposeAsync() //bu ne????
         {

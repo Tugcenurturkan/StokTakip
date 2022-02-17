@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StokTakip.Data.Concrete.EntityFramework.Context;
 
 namespace StokTakip.Data.Migrations
 {
     [DbContext(typeof(StokTakipContext))]
-    partial class StokTakipContextModelSnapshot : ModelSnapshot
+    [Migration("20220217131312_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -260,7 +262,7 @@ namespace StokTakip.Data.Migrations
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
-                            NormalizedUserName = "ADMIN",
+                            NormalizedUserName = "ADMINUSER",
                             PasswordHash = "AQAAAAEAACcQAAAAEG++iYB8a17l+9jCJ0Xvy3Ug61weAH5ovm8nBug5psunxBLlQ7e9Gxp6289gAVToVg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "19a4fbd5-f153-4f8d-9d0a-fc7549d23ca0",

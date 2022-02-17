@@ -1,14 +1,15 @@
 ﻿using StokTakip.Entities.Concrete;
-using StokTakip.Shared.Data.Abstract;
+using StokTakip.Shared.Entities.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StokTakip.Data.Abstract
+namespace StokTakip.Entities.Dtos
 {
-    public interface IRoleRepository : IEntityRepository<Role>
+    public class UserDto : DtoGetBase
     {
+        public User User { get; set; }
     }
 }

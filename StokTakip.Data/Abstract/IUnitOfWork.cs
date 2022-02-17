@@ -10,8 +10,6 @@ namespace StokTakip.Data.Abstract
     {
         IProductDefinitionRepository ProductDefinitions { get; }
         IProductTypeRepository ProductTypes { get; }
-        IRoleRepository Roles { get; }
-        IUserRepository Users { get; }
         Task<int> SaveAsync();
     }
 }
