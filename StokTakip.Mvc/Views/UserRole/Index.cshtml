@@ -1,3 +1,48 @@
-﻿<main id="js-page-content" role="main" class="page-content">
-    <h1>Kullanıcı Rol Atama</h1>
-</main>
+﻿@using StokTakip.Shared.Utilities.Results.ComplexTypes
+@model StokTakip.Entities.Dtos.UserRoleListDto
+@{
+    Layout = "_Layout";
+    //ViewBag.Title = "Kullanıcı Rol Atama";
+}
+@if (Model.ResultStatus == ResultStatus.Success)
+{
+    <div id="modalPlaceHolder" aria-hidden="true"></div>
+    <div class="card mb-4 mt-2">
+        <div class="card-header"><i class="fas fa-table mr-1"></i>Kullanıcı Rol Atama</div>
+        <div class="card-body">
+            <div class="spinner-border" role="status" style="display:none;">
+                <span class="sr-only">Yükleniyor...</span>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered" id="userRolesTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Kullanıcı</th>
+                            <th>Rol</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.UserRoleList)
+                        {
+                            <tr name="@item.Id">
+                                <td>@item.UserName</td>
+                                <td>@item.RoleName</td>
+                                <td width="100px">
+                                    <button class="btn btn-primary btn-sm btn-update" data-id="@item.Id"><span class="fas fa-edit"></span></button>
+                                    <button class="btn btn-danger btn-sm btn-delete" data-id="@item.Id"><span class="fas fa-minus-circle"></span></button>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+}
+@section Scripts
+{
+    <script src="~/js/userRoleIndex.js" type="application/ecmascript"></script>
+}

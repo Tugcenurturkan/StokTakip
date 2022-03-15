@@ -163,5 +163,11 @@ namespace StokTakip.Mvc.Controllers
                 return Json(deletedRoleErrorModel);
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> GetAllRoles()
+        {
+            var roles = await _roleManager.Roles.Select(x=>x.Name).ToListAsync();
+            return Json(roles);
+        }
     }
 }

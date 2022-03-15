@@ -1,0 +1,66 @@
+﻿@model StokTakip.Entities.Dtos.UserRoleAddDto
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><span class="fas fa-plus"></span> Kullanıcı Rol Ekle</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="İptal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="Add" id="form-userRole-add">
+                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                    <div asp-validation-summary="All" class="text-danger" id="validation-summary" aria-hidden="true" style="display: none;"></div>
+                    <div class="form-group">
+                        <label class="form-label" asp-for="UserName"></label>
+                        <select id="userList" asp-for="UserName" class="form-control" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                            <option>---</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="UserName"></span>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" asp-for="RoleName"></label>
+                        <select id="roleList" asp-for="RoleName" class="form-control" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                            <option>---</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="RoleName"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-block" data-dismiss="modal"><span class="fas fa-times"></span> İptal</button>
+                <button type="button" class="btn btn-primary btn-block" id="btnSave"><span class="fas fa-save"></span> Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#userList").select2();
+        $("#roleList").select2();
+        GetAllUsers();
+        GetAllRoles();
+    });
+    function GetAllUsers() {
+        const url = '/User/GetAllUsers/';
+        $.get(url).done(function (data) {
+            for (var i = 0; i < data.$values.length; i++) {
+                var userSelect = data.$values[i];
+                var op = '<option  id="user_' + userSelect + '" value="' + userSelect + '">' + userSelect + '</option>';
+                $("#userList").append(op);
+            }
+        });
+    }
+    function GetAllRoles() {
+        const url = '/Role/GetAllRoles/';
+        $.get(url).done(function (data) {
+            for (var i = 0; i < data.$values.length; i++) {
+                var roleSelect = data.$values[i];
+                var op = '<option  id="role_' + roleSelect + '" value="' + roleSelect + '">' + roleSelect + '</option>';
+                $("#roleList").append(op);
+            }
+        });
+    }
+</script>

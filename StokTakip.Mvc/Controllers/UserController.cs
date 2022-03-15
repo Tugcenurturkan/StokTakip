@@ -8,6 +8,7 @@ using StokTakip.Entities.Dtos;
 using StokTakip.Mvc.Models;
 using StokTakip.Shared.Utilities.Extensions;
 using StokTakip.Shared.Utilities.Results.ComplexTypes;
+using StokTakip.Shared.Utilities.Results.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace StokTakip.Mvc.Controllers
             _mapper = mapper;
             _signInManager = signInManager;
         }
-        [Authorize(Roles="Sistem Yöneticisi")]
+        [Authorize(Roles = "Sistem Yöneticisi")]
         public async Task<IActionResult> Index()
         {
             var users = await _userManager.Users.ToListAsync();
@@ -220,5 +221,12 @@ namespace StokTakip.Mvc.Controllers
                 return Json(userUpdateErrorModelStateViewModel);
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var users = await _userManager.Users.Select(x => x.UserName).ToListAsync();
+            return Json(users);
+        }
+
     }
 }
