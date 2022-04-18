@@ -1,3 +1,4 @@
+using AutoMapper.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -15,6 +16,7 @@ namespace StokTakip.Mvc
 {
     public class Startup
     {
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
@@ -25,7 +27,7 @@ namespace StokTakip.Mvc
                 opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
             });
             services.AddSession();
-            services.AddAutoMapper(typeof(UserProfile));
+            services.AddAutoMapper(typeof(UserProfile),typeof(ProductDefinitionProfile), typeof(ProductTypeProfile));
             services.LoadMyServices();
             services.ConfigureApplicationCookie(options =>
             {
@@ -51,6 +53,7 @@ namespace StokTakip.Mvc
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseHttpsRedirection();
             app.UseSession();
             app.UseStaticFiles();
             app.UseRouting();

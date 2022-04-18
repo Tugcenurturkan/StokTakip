@@ -1,8 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using AutoMapper.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using StokTakip.Data.Abstract;
 using StokTakip.Data.Concrete;
 using StokTakip.Data.Concrete.EntityFramework.Context;
 using StokTakip.Entities.Concrete;
+using StokTakip.Services.Abstract;
+using StokTakip.Services.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,10 +32,11 @@ namespace StokTakip.Services.Extensions
                 options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<StokTakipContext>(); 
-            //alt satır hata veriyor buna kullanıcı girişini tamaladıktan sonra mutlaka bak
-            //serviceCollection.AddScoped<IUnitOfWork,UnitOfWork>();
-            //serviceCollection.AddScoped<IProductTypeService,ProductTypeManager>();
-            //serviceCollection.AddScoped<IProductDefinitionService,ProductDefinitionManager>();
+            
+            serviceCollection.AddScoped<IUnitOfWork, UnitOfWork>();
+            serviceCollection.AddScoped<IProductDefinitionService, ProductDefinitionService>();
+            serviceCollection.AddScoped<IProductActivitiesService, ProductActivitiesService>();
+            
             return serviceCollection;
         }
     }

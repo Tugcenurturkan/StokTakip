@@ -1,3 +1,47 @@
-﻿<main id="js-page-content" role="main" class="page-content">
-    <h1>Ürün Türü Tanım</h1>
-</main>
+﻿@using StokTakip.Shared.Utilities.Results.ComplexTypes
+@model StokTakip.Entities.Dtos.ProductTypeListDto
+@{
+    Layout = "_Layout";
+    //ViewBag.Title = "Ürün Türü Tanım";
+}
+@if (Model.ResultStatus == ResultStatus.Success)
+{
+    <div id="modalPlaceHolder" aria-hidden="true"></div>
+    <div class="card mb-4 mt-2">
+        <div class="card-header"><i class="fas fa-table mr-1"></i>Ürün Türü Tanım</div>
+        <div class="card-body">
+            <div class="spinner-border" role="status" style="display:none;">
+                <span class="sr-only">Yükleniyor...</span>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered" id="productTypesTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Ürün Türü</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var productTypes in Model.ProductTypes)
+                        {
+                            <tr name="@productTypes.ID">
+                                <td>@productTypes.ID</td>
+                                <td>@productTypes.Name</td>
+                                <td width="100px">
+                                    <button class="btn btn-primary btn-sm btn-update" data-id="@productTypes.ID"><span class="fas fa-edit"></span></button>
+                                    <button class="btn btn-danger btn-sm btn-delete" data-id="@productTypes.ID"><span class="fas fa-minus-circle"></span></button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+}
+@section Scripts
+{
+    <script src="~/js/productType.js" type="application/ecmascript"></script>
+}

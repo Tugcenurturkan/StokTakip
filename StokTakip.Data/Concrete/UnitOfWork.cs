@@ -12,26 +12,25 @@ namespace StokTakip.Data.Concrete
     public class UnitOfWork : IUnitOfWork
     {
         private readonly StokTakipContext _context;
-        private EfProductDefinitionRepository _productDefinitionRepository;
-        private EfProductTypeRepository _productTypeRepository;
-        public UnitOfWork(StokTakipContext context, EfProductDefinitionRepository productDefinitionRepository, EfProductTypeRepository productTypeRepository)
+        private EfProductDefinitionRepository _efProductDefinitionRepository;
+        private EfProductTypeRepository _efProductTypeRepository;
+        public UnitOfWork(StokTakipContext context)
         {
             _context = context;
-            _productDefinitionRepository = productDefinitionRepository;
-            _productTypeRepository = productTypeRepository;
         }
-        public IProductDefinitionRepository ProductDefinitions => _productDefinitionRepository ?? new EfProductDefinitionRepository(_context);
+        public IProductDefinitionRepository ProductDefinitions => _efProductDefinitionRepository ?? new EfProductDefinitionRepository(_context);
 
-        public IProductTypeRepository ProductTypes => _productTypeRepository ?? new EfProductTypeRepository(_context);
-
-        public async ValueTask DisposeAsync() //bu ne????
-        {
-            await _context.DisposeAsync();
-        }
+        public IProductTypeRepository ProductTypes => _efProductTypeRepository ?? new EfProductTypeRepository(_context);
 
         public async Task<int> SaveAsync()
         {
             return await _context.SaveChangesAsync();
         }
+        public async ValueTask DisposeAsync() //bu ne????
+        {
+            await _context.DisposeAsync();
+        }
+
+        
     }
 }

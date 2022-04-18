@@ -14,4 +14,8 @@
     <ProjectReference Include="..\StokTakip.Services\StokTakip.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\ProductType\" />
+  </ItemGroup>
+
 </Project>
