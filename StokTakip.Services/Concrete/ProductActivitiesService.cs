@@ -23,123 +23,97 @@ namespace StokTakip.Services.Concrete
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public async Task<IResult> Add(ProductDefinitionAddDto productDefinitionAddDto, Guid createdUser)
+        public async Task<IDataResult<ProductActivitiesDto>> Add(ProductActivitiesAddDto productDefinitionAddDto)
         {
-            var product = _mapper.Map<ProductDefinition>(productDefinitionAddDto);
-            product.CreatedUserId = createdUser;
-            product.ModifiedUserId = createdUser;
-            await _unitOfWork.ProductDefinitions.AddAsync(product).ContinueWith(x => _unitOfWork.SaveAsync());
-            return new Result(ResultStatus.Success, $"{productDefinitionAddDto.Name} adlı ürün başarıyla eklenmiştir.");
+            var product = _mapper.Map<ProductActivity>(productDefinitionAddDto);
+            var addedProduct = await _unitOfWork.ProductActivities.AddAsync(product);
+            await _unitOfWork.SaveAsync();
+            return new DataResult<ProductActivitiesDto>(ResultStatus.Success, $"{productDefinitionAddDto.Name} adlı ürün başarıyla eklenmiştir.",
+                 new ProductActivitiesDto
+                 {
+                     ProductActivity = addedProduct,
+                     ResultStatus = ResultStatus.Success,
+                     Message = $"{productDefinitionAddDto.Name} adlı ürün başarıyla eklenmiştir."
+                 });
         }
 
-        public async Task<IResult> Delete(Guid productDefinitionId, string modifiedByName)
+        public async Task<IDataResult<ProductActivitiesDto>> Delete(Guid productDefinitionId)
         {
-            var product = await _unitOfWork.ProductDefinitions.GetAsync(x => x.ID == productDefinitionId && x.IsActive && !x.IsDeleted);
+            var product = await _unitOfWork.ProductActivities.GetAsync(x => x.ID == productDefinitionId && x.IsActive && !x.IsDeleted);
             if (product != null)
             {
                 product.IsDeleted = true;
-                product.ModifiedUserId = Guid.Parse(modifiedByName);
-                product.ModifiedTime = DateTime.Now;
-                await _unitOfWork.ProductDefinitions.UpdateAsync(product).ContinueWith(x => _unitOfWork.SaveAsync());
-                return new Result(ResultStatus.Success, $"{product.Name} adlı ürün başarıyla silinmiştir.");
+                var deletedProduct = await _unitOfWork.ProductActivities.UpdateAsync(product);
+                await _unitOfWork.SaveAsync();
+                return new DataResult<ProductActivitiesDto>(ResultStatus.Success, $"{deletedProduct.Name} adlı ürün başarıyla silinmiştir.", new ProductActivitiesDto
+                {
+                    ProductActivity = deletedProduct,
+                    ResultStatus = ResultStatus.Success,
+                    Message = $"{deletedProduct.Name} adlı ürün başarıyla silinmiştir."
+                });
             }
-            return new Result(ResultStatus.Error, "Böyle Bir ürün bulunamadı");
+            return new DataResult<ProductActivitiesDto>(ResultStatus.Error, $"Böyle bir ürün bulunamadı.", new ProductActivitiesDto
+            {
+                ProductActivity = null,
+                ResultStatus = ResultStatus.Error,
+                Message = $"Böyle bir ürün bulunamadı."
+            });
         }
 
-        public async Task<IDataResult<ProductDefinitionDto>> GetById(Guid productDefinitionId)
+        public async Task<IDataResult<ProductActivitiesDto>> GetById(Guid productDefinitionId)
         {
-            var product = await _unitOfWork.ProductDefinitions.GetAsync(x => x.ID == productDefinitionId && x.IsActive && !x.IsDeleted, x => x.ProductType);
+            var product = await _unitOfWork.ProductActivities.GetAsync(x => x.ID == productDefinitionId && x.IsActive && !x.IsDeleted, x => x.ProductType);
             if (product != null)
             {
-                return new DataResult<ProductDefinitionDto>(ResultStatus.Success, new ProductDefinitionDto
+                return new DataResult<ProductActivitiesDto>(ResultStatus.Success, new ProductActivitiesDto
                 {
-                    ProductDefinition = product,
+                    ProductActivity = product,
                     ResultStatus = ResultStatus.Success
                 });
             }
-            return new DataResult<ProductDefinitionDto>(ResultStatus.Error, "Böyle Bir ürün bulunamadı", null);
+            return new DataResult<ProductActivitiesDto>(ResultStatus.Error, "Böyle Bir ürün bulunamadı", null);
         }
 
-        public async Task<IDataResult<ProductDefinitionListDto>> GetAll()
+        public async Task<IDataResult<ProductActivitiesListDto>> GetAll()
         {
-            var products = await _unitOfWork.ProductDefinitions.GetAllAsync(x => x.IsActive && !x.IsDeleted, x => x.ProductType);
+            var products = await _unitOfWork.ProductActivities.GetAllAsync(x => x.IsActive && !x.IsDeleted, x => x.ProductType);
             if (products.Count > -1)
             {
-                return new DataResult<ProductDefinitionListDto>(ResultStatus.Success, new ProductDefinitionListDto
+                return new DataResult<ProductActivitiesListDto>(ResultStatus.Success, new ProductActivitiesListDto
                 {
                     Products = products,
                     ResultStatus = ResultStatus.Success
                 });
             }
-            return new DataResult<ProductDefinitionListDto>(ResultStatus.Error, "Ürün Bulunamadı", null);
+            return new DataResult<ProductActivitiesListDto>(ResultStatus.Error, "Ürün Bulunamadı", null);
         }
 
-        public async Task<IResult> Update(ProductDefinitionUpdateDto productDefinitionUpdateDto, Guid modifiedUser)
+        public async Task<IDataResult<ProductActivitiesDto>> Update(ProductActivitiesUpdateDto productDefinitionUpdateDto)
         {
-            var product = _mapper.Map<ProductDefinition>(productDefinitionUpdateDto);
-            product.ModifiedUserId = modifiedUser;
-            await _unitOfWork.ProductDefinitions.UpdateAsync(product).ContinueWith(x => _unitOfWork.SaveAsync());
-            return new Result(ResultStatus.Success, $"{productDefinitionUpdateDto.Name} adlı ürün başarıyla güncellenmiştir.");
-        }
-        public async Task<IDataResult<ProductTypeListDto>> GetAllProductType()
-        {
-            var productType = await _unitOfWork.ProductTypes.GetAllAsync(x => x.IsActive && !x.IsDeleted);
-            if (productType.Count > -1)
+            var oldproduct = await _unitOfWork.ProductActivities.GetAsync(x => x.ID == productDefinitionUpdateDto.Id);
+            var product = _mapper.Map<ProductActivitiesUpdateDto, ProductActivity>(productDefinitionUpdateDto, oldproduct);
+            var updatedProduct = await _unitOfWork.ProductActivities.UpdateAsync(product);
+            await _unitOfWork.SaveAsync();
+            return new DataResult<ProductActivitiesDto>(ResultStatus.Success, $"{productDefinitionUpdateDto.Name} adlı ürün başarıyla güncellenmiştir.", new ProductActivitiesDto
             {
-                return new DataResult<ProductTypeListDto>(ResultStatus.Success, new ProductTypeListDto
-                {
-                    ProductTypes = productType,
-                    ResultStatus = ResultStatus.Success
-                });
-            }
-            return new DataResult<ProductTypeListDto>(ResultStatus.Error, "Ürün türü Bulunamadı", null);
+                ProductActivity = updatedProduct,
+                ResultStatus = ResultStatus.Success,
+                Message = $"{productDefinitionUpdateDto.Name} adlı ürün başarıyla güncellenmiştir."
+            });
         }
-
-
-
-
-        public async Task<IResult> AddProductType(ProductTypeAddDto productTypeAddDto, Guid createdUser)
+        public async Task<IDataResult<ProductActivitiesUpdateDto>> GetProductActivityUpdateDto(Guid productDefinitionId)
         {
-            var productType = _mapper.Map<ProductType>(productTypeAddDto);
-            productType.CreatedUserId = createdUser;
-            productType.ModifiedUserId = createdUser;
-            await _unitOfWork.ProductTypes.AddAsync(productType).ContinueWith(x => _unitOfWork.SaveAsync());
-            return new Result(ResultStatus.Success, $"{productTypeAddDto.Name} adlı ürün türü başarıyla eklenmiştir.");
-        }
-
-        public async Task<IResult> DeleteProductType(Guid productTypeId, string modifiedByName)
-        {
-            var productType = await _unitOfWork.ProductTypes.GetAsync(x => x.ID == productTypeId && x.IsActive && !x.IsDeleted);
-            if (productType != null)
+            var result = await _unitOfWork.ProductActivities.AnyAsync(x => x.ID == productDefinitionId);
+            if (result)
             {
-                productType.IsDeleted = true;
-                productType.ModifiedUserId = Guid.Parse(modifiedByName);
-                productType.ModifiedTime = DateTime.Now;
-                await _unitOfWork.ProductTypes.UpdateAsync(productType).ContinueWith(x => _unitOfWork.SaveAsync());
-                return new Result(ResultStatus.Success, $"{productType.Name} adlı ürün türü başarıyla silinmiştir.");
+                var productDefinition = await _unitOfWork.ProductActivities.GetAsync(x => x.ID == productDefinitionId);
+                var productDefinitionUpdateDto = _mapper.Map<ProductActivitiesUpdateDto>(productDefinition);
+                return new DataResult<ProductActivitiesUpdateDto>(ResultStatus.Success, productDefinitionUpdateDto);
             }
-            return new Result(ResultStatus.Error, "Böyle Bir ürün türü bulunamadı");
-        }
-
-        public async Task<IDataResult<ProductTypeDto>> GetByIdProductType(Guid productTypeId)
-        {
-            var productType = await _unitOfWork.ProductTypes.GetAsync(x => x.ID == productTypeId && x.IsActive && !x.IsDeleted);
-            if (productType != null)
+            else
             {
-                return new DataResult<ProductTypeDto>(ResultStatus.Success, new ProductTypeDto
-                {
-                    ProductType = productType,
-                    ResultStatus = ResultStatus.Success
-                });
+                return new DataResult<ProductActivitiesUpdateDto>(ResultStatus.Error, "Böyle bir ürün türü bulunamadı.", null);
             }
-            return new DataResult<ProductTypeDto>(ResultStatus.Error, "Böyle Bir ürün türü bulunamadı", null);
-        }
-        public async Task<IResult> UpdateProductType(ProductTypeUpdateDto productTypeUpdateDto, Guid modifiedUser)
-        {
-            var productType = _mapper.Map<ProductType>(productTypeUpdateDto);
-            productType.ModifiedUserId = modifiedUser;
-            await _unitOfWork.ProductTypes.UpdateAsync(productType).ContinueWith(x => _unitOfWork.SaveAsync());
-            return new Result(ResultStatus.Success, $"{productTypeUpdateDto.Name} adlı ürün türü başarıyla güncellenmiştir.");
         }
     }
 }

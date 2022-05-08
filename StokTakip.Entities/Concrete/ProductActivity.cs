@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace StokTakip.Entities.Concrete
 {
-    public class ProductDefinition : EntityBase,IEntity
+    public class ProductActivity : EntityBase,IEntity
     {
         public string Barcode { get; set; }
         public string Name { get; set; }
@@ -19,6 +19,7 @@ namespace StokTakip.Entities.Concrete
         public Guid UserId { get; set; }
         public User User { get; set; }
         public ProductType ProductType { get; set; }
+        public int ActivityType { get; set; } // 1 giriş 2 çıkış
 
     }
 }

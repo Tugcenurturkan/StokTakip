@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace StokTakip.Data.Abstract
 {
-    public interface IProductDefinitionRepository : IEntityRepository<ProductDefinition>
+    public interface IProductActivityRepository : IEntityRepository<ProductActivity>
     {
     }
 }

@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace StokTakip.Data.Concrete.EntityFramework.Mappings
 {
-    public class ProductDefinitionMap : IEntityTypeConfiguration<ProductDefinition>
+    public class ProductActivityMap : IEntityTypeConfiguration<ProductActivity>
     {
-        public void Configure(EntityTypeBuilder<ProductDefinition> builder)
+        public void Configure(EntityTypeBuilder<ProductActivity> builder)
         {
             builder.HasKey(x => x.ID);
             builder.Property(x => x.ID).ValueGeneratedOnAdd();
@@ -23,6 +23,7 @@ namespace StokTakip.Data.Concrete.EntityFramework.Mappings
             builder.Property(x => x.Amount).IsRequired();
             builder.Property(x => x.Date).IsRequired();
             builder.Property(x => x.Size).IsRequired();
+            builder.Property(x => x.ActivityType).IsRequired();
             builder.Property(x => x.CreatedUserId).HasMaxLength(100);
             builder.Property(x => x.CreatedUserId).IsRequired();
             builder.Property(x => x.ModifiedUserId).HasMaxLength(100);
@@ -31,7 +32,7 @@ namespace StokTakip.Data.Concrete.EntityFramework.Mappings
             builder.Property(x => x.ModifiedTime).IsRequired();
             builder.Property(x => x.IsActive).IsRequired();
             builder.Property(x => x.IsDeleted).IsRequired();
-            builder.ToTable("ProductDefinition");
+            builder.ToTable("ProductActivity");
         }
     }
 }

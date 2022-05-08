@@ -50,4 +50,23 @@
             { "visible": false, "targets": 0 }
         ]
     });
+    /* DataTables end here */
+
+    /* Ajax GET / Getting the _ProductDefinitionAddPartial as Modal Form starts from here. */
+    $(function () {
+        const url = "/ProductDefinition/AddProductDefinition/";
+        const placeHolderDiv = $("#modalPlaceHolder");
+        $("#btnAdd").click(function () {
+            $.get(url).done(function (data) {
+                placeHolderDiv.html(data);
+                placeHolderDiv.find(".modal").modal('show');
+            });
+        });
+
+    
+    });
+
+    /* Ajax POST / Posting the FormData as RoleAddDto ends here. */
+
+    /* Ajax GET / Getting the _RoleUpdatePartial as Modal Form starts from here. */
 });

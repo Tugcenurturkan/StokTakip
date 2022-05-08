@@ -27,7 +27,7 @@ namespace StokTakip.Mvc
                 opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
             });
             services.AddSession();
-            services.AddAutoMapper(typeof(UserProfile),typeof(ProductDefinitionProfile), typeof(ProductTypeProfile));
+            services.AddAutoMapper(typeof(UserProfile),typeof(ProductActivityProfile), typeof(ProductTypeProfile));
             services.LoadMyServices();
             services.ConfigureApplicationCookie(options =>
             {

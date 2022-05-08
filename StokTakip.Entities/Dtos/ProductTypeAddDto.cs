@@ -10,7 +10,7 @@ namespace StokTakip.Entities.Dtos
 {
     public class ProductTypeAddDto
     {
-        [DisplayName("Adı")]
+        [DisplayName("Ürün Türü Adı")]
         [Required(ErrorMessage = "{0} boş geçilmemelidir.")]
         [MaxLength(50, ErrorMessage = "{0} {1} karakterden büyük olmamalıdır.")]
         public string Name { get; set; }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace StokTakip.Entities.Dtos
 {
-    public class ProductDefinitionAddDto
+    public class ProductActivitiesAddDto
     {
         [DisplayName("Barkod")]
         [Required(ErrorMessage = "{0} boş geçilmemelidir.")]
@@ -33,6 +33,8 @@ namespace StokTakip.Entities.Dtos
         [DisplayName("Beden")]
         [Required(ErrorMessage = "{0} boş geçilmemelidir.")]
         public int Size { get; set; }
+        [DisplayName("Ürün Türü")]
+        [Required(ErrorMessage = "{0} boş geçilmemelidir.")]
         public Guid ProductTypeId { get; set; }
         public ProductType ProductType { get; set; }
     }

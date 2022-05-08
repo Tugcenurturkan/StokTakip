@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace StokTakip.Entities.Dtos
 {
-    public class ProductDefinitionUpdateDto
+    public class ProductActivitiesUpdateDto
     {
         [Required]
         public Guid Id { get; set; }

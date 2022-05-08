@@ -12,13 +12,13 @@ namespace StokTakip.Data.Concrete
     public class UnitOfWork : IUnitOfWork
     {
         private readonly StokTakipContext _context;
-        private EfProductDefinitionRepository _efProductDefinitionRepository;
+        private EfProductActivityRepository _efProductActivityRepository;
         private EfProductTypeRepository _efProductTypeRepository;
         public UnitOfWork(StokTakipContext context)
         {
             _context = context;
         }
-        public IProductDefinitionRepository ProductDefinitions => _efProductDefinitionRepository ?? new EfProductDefinitionRepository(_context);
+        public IProductActivityRepository ProductActivities => _efProductActivityRepository ?? new EfProductActivityRepository(_context);
 
         public IProductTypeRepository ProductTypes => _efProductTypeRepository ?? new EfProductTypeRepository(_context);
 

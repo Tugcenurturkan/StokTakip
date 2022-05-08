@@ -12,7 +12,7 @@ namespace StokTakip.Data.Concrete.EntityFramework.Context
 {
     public class StokTakipContext : IdentityDbContext<User,Role,Guid,UserClaim,UserRole,UserLogin,RoleClaim,UserToken>
     {
-        DbSet<ProductDefinition> ProductDefinitions { get; set; }
+        DbSet<ProductActivity> ProductActivities { get; set; }
         DbSet<ProductType> ProductTypes { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -20,7 +20,7 @@ namespace StokTakip.Data.Concrete.EntityFramework.Context
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new ProductDefinitionMap());
+            modelBuilder.ApplyConfiguration(new ProductActivityMap());
             modelBuilder.ApplyConfiguration(new ProductTypeMap());
             modelBuilder.ApplyConfiguration(new RoleMap());
             modelBuilder.ApplyConfiguration(new UserMap());

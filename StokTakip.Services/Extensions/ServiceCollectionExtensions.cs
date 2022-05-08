@@ -34,7 +34,7 @@ namespace StokTakip.Services.Extensions
             }).AddEntityFrameworkStores<StokTakipContext>(); 
             
             serviceCollection.AddScoped<IUnitOfWork, UnitOfWork>();
-            serviceCollection.AddScoped<IProductDefinitionService, ProductDefinitionService>();
+            serviceCollection.AddScoped<IProductTypeService, ProductTypeService>();
             serviceCollection.AddScoped<IProductActivitiesService, ProductActivitiesService>();
             
             return serviceCollection;

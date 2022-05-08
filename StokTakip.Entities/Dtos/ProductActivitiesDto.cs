@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace StokTakip.Entities.Dtos
 {
-    public class ProductDefinitionDto : DtoGetBase
+    public class ProductActivitiesDto : DtoGetBase
     {
-        public ProductDefinition ProductDefinition { get; set; }
+        public ProductActivity ProductActivity { get; set; }
     }
 }

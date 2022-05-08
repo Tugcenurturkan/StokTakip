@@ -8,7 +8,7 @@ namespace StokTakip.Data.Abstract
 {
     public interface IUnitOfWork:IAsyncDisposable
     {
-        IProductDefinitionRepository ProductDefinitions { get; }
+        IProductActivityRepository ProductActivities { get; }
         IProductTypeRepository ProductTypes { get; }
         Task<int> SaveAsync();
     }

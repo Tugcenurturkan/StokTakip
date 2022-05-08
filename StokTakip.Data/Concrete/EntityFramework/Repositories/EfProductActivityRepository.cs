@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace StokTakip.Data.Concrete.EntityFramework.Repositories
 {
-    public class EfProductDefinitionRepository : EfEntityRepositoryBase<ProductDefinition>,IProductDefinitionRepository
+    public class EfProductActivityRepository : EfEntityRepositoryBase<ProductActivity>,IProductActivityRepository
     {
-        public EfProductDefinitionRepository(DbContext context) : base(context)
+        public EfProductActivityRepository(DbContext context) : base(context)
         {
              
         }
