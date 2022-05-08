@@ -18,6 +18,7 @@ namespace StokTakip.Mvc.Controllers
         }
         public IActionResult Index()
         {
+            var a = _productActivitiesService.GetAllProductsInStock();
             return View();
         }
     }
