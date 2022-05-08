@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StokTakip.Data.Concrete.EntityFramework.Context;
 
 namespace StokTakip.Data.Migrations
 {
     [DbContext(typeof(StokTakipContext))]
-    partial class StokTakipContextModelSnapshot : ModelSnapshot
+    [Migration("20220508133830_ProductActivity")]
+    partial class ProductActivity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
