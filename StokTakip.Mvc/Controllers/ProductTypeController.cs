@@ -20,15 +20,6 @@ namespace StokTakip.Mvc.Controllers
         {
             _productTypeService = productDefinitionService;
         }
-        //public async Task<IActionResult> ProductDefinition()
-        //{
-        //    var result = await _productTypeService.GetAll();
-        //    if (result.ResultStatus == ResultStatus.Success)
-        //    {
-        //        return View(result.Data);
-        //    }
-        //    return View();
-        //}
         public async Task<IActionResult> ProductTypeDefinition()
         {
             var result = await _productTypeService.GetAllProductType();
@@ -66,34 +57,6 @@ namespace StokTakip.Mvc.Controllers
             return Json(productTypeAddAjaxErrorModel);
 
         }
-        //[HttpGet]
-        //public IActionResult AddProductDefinition()
-        //{
-        //    return PartialView("_ProductDefinitionAddPartial");
-        //}
-        //[HttpPost]
-        //public async Task<IActionResult> AddProductDefinition(ProductDefinitionAddDto productDefinitonAddDto)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var result = await _productDefinitionService.Add(productDefinitonAddDto);
-        //        if (result.ResultStatus == ResultStatus.Success)
-        //        {
-        //            var productDefinitionAddAjaxModel = JsonSerializer.Serialize(new ProductDefinitionAddAjaxViewModel
-        //            {
-        //                ProductDefinitionDto = result.Data,
-        //                ProductDefinitionAddPartial = await this.RenderViewToStringAsync("_ProductDefinitionAddPartial", productDefinitonAddDto)
-        //            });
-        //            return Json(productDefinitionAddAjaxModel);
-        //        }
-        //    }
-        //    var productDefinitionAddAjaxErrorModel = JsonSerializer.Serialize(new ProductDefinitionAddAjaxViewModel
-        //    {
-        //        ProductDefinitionAddPartial = await this.RenderViewToStringAsync("_ProductDefinitionAddPartial", productDefinitonAddDto)
-        //    });
-        //    return Json(productDefinitionAddAjaxErrorModel);
-
-        //}
         [HttpGet]
         public async Task<IActionResult> UpdateProductType(Guid productTypeId)
         {

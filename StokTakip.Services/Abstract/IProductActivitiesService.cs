@@ -11,10 +11,13 @@ namespace StokTakip.Services.Abstract
     public interface IProductActivitiesService
     {
         Task<IDataResult<ProductActivitiesDto>> GetById(Guid productDefinitionId);
-        Task<IDataResult<ProductActivitiesListDto>> GetAll();
+        Task<IDataResult<ProductActivitiesListDto>> GetAllEntryActivities();
+        Task<IDataResult<ProductActivitiesListDto>> GetAllTakeOffActivities();
         Task<IDataResult<ProductActivitiesDto>> Add(ProductActivitiesAddDto productDefinitionAddDto);
         Task<IDataResult<ProductActivitiesDto>> Update(ProductActivitiesUpdateDto productDefinitionUpdateDto);
         Task<IDataResult<ProductActivitiesDto>> Delete(Guid productDefinitionId);
         Task<IDataResult<ProductActivitiesUpdateDto>> GetProductActivityUpdateDto(Guid productDefinitionId);
+        Task<IDataResult<ProductActivitiesListDto>> GetAllProductsInStock();
+
     }
 }

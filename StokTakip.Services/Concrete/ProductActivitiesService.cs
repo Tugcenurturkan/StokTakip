@@ -27,6 +27,9 @@ namespace StokTakip.Services.Concrete
         {
             var product = _mapper.Map<ProductActivity>(productDefinitionAddDto);
             var addedProduct = await _unitOfWork.ProductActivities.AddAsync(product);
+            addedProduct.CreatedUserId = new Guid("7f2474c3-7aa0-4878-9e8e-3f99de1583a0");
+            addedProduct.ModifiedUserId = new Guid("7f2474c3-7aa0-4878-9e8e-3f99de1583a0");
+            addedProduct.UserId = new Guid("7f2474c3-7aa0-4878-9e8e-3f99de1583a0");
             await _unitOfWork.SaveAsync();
             return new DataResult<ProductActivitiesDto>(ResultStatus.Success, $"{productDefinitionAddDto.Name} adlı ürün başarıyla eklenmiştir.",
                  new ProductActivitiesDto
@@ -74,9 +77,22 @@ namespace StokTakip.Services.Concrete
             return new DataResult<ProductActivitiesDto>(ResultStatus.Error, "Böyle Bir ürün bulunamadı", null);
         }
 
-        public async Task<IDataResult<ProductActivitiesListDto>> GetAll()
+        public async Task<IDataResult<ProductActivitiesListDto>> GetAllEntryActivities()
         {
-            var products = await _unitOfWork.ProductActivities.GetAllAsync(x => x.IsActive && !x.IsDeleted, x => x.ProductType);
+            var products = await _unitOfWork.ProductActivities.GetAllAsync(x => x.IsActive && !x.IsDeleted && x.ActivityType == 1, x => x.ProductType);
+            if (products.Count > -1) 
+            {
+                return new DataResult<ProductActivitiesListDto>(ResultStatus.Success, new ProductActivitiesListDto
+                {
+                    Products = products,
+                    ResultStatus = ResultStatus.Success
+                });
+            }
+            return new DataResult<ProductActivitiesListDto>(ResultStatus.Error, "Ürün Bulunamadı", null);
+        }
+        public async Task<IDataResult<ProductActivitiesListDto>> GetAllTakeOffActivities()
+        {
+            var products = await _unitOfWork.ProductActivities.GetAllAsync(x => x.IsActive && !x.IsDeleted && x.ActivityType == 2, x => x.ProductType);
             if (products.Count > -1)
             {
                 return new DataResult<ProductActivitiesListDto>(ResultStatus.Success, new ProductActivitiesListDto
@@ -115,5 +131,37 @@ namespace StokTakip.Services.Concrete
                 return new DataResult<ProductActivitiesUpdateDto>(ResultStatus.Error, "Böyle bir ürün türü bulunamadı.", null);
             }
         }
+        //public async Task<IDataResult<ProductActivitiesListDto>> GetAllProductsInStock()
+        //{
+        //    var entryProducts = await _unitOfWork.ProductActivities.GetAllAsync(x => x.IsActive && !x.IsDeleted && x.ActivityType == 1, x => x.ProductType);
+        //    int stock;
+        //    decimal gain;
+        //    foreach (var entryProduct in entryProducts)
+        //    {
+        //        var takeOffProducts = await _unitOfWork.ProductActivities.GetAllAsync(x => x.IsActive && !x.IsDeleted && x.ActivityType == 2 && x.Barcode == entryProduct.Barcode, x => x.ProductType);
+        //        foreach (var takeOffProduct in takeOffProducts)
+        //        {
+        //            stock = entryProduct.Amount - takeOffProduct.Amount;
+        //            gain = takeOffProduct.Price - entryProduct.Price;
+        //        }
+        //    }
+
+
+
+
+
+
+
+
+        //    //if (products.Count > -1)
+        //    //{
+        //    //    return new DataResult<ProductActivitiesListDto>(ResultStatus.Success, new ProductActivitiesListDto
+        //    //    {
+        //    //        Products = products,
+        //    //        ResultStatus = ResultStatus.Success
+        //    //    });
+        //    //}
+        //    //return new DataResult<ProductActivitiesListDto>(ResultStatus.Error, "Ürün Bulunamadı", null);
+        //}
     }
 }

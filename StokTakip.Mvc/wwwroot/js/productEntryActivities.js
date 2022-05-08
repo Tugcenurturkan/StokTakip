@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    const dataTable = $('#productTakeOutActivitiesTable').DataTable({
+    const dataTable = $('#productEntryActivitiesTable').DataTable({
         dom:
             "<'row'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" +
             "<'row'<'col-sm-12'tr>>" +
@@ -52,9 +52,9 @@
     });
     /* DataTables end here */
 
-    /* Ajax GET / Getting the _ProductTakeOffActivitiesAddPartial as Modal Form starts from here. */
+    /* Ajax GET / Getting the _ProductEntryActivitiesAddPartial as Modal Form starts from here. */
     $(function () {
-        const url = "/ProductActivities/AddProductTakeOff/";
+        const url = "/ProductActivities/AddProductEntry/";
         const placeHolderDiv = $("#modalPlaceHolder");
         $("#btnAdd").click(function () {
             $.get(url).done(function (data) {
@@ -62,7 +62,7 @@
                 placeHolderDiv.find(".modal").modal('show');
             });
         });
-        /* Ajax GET / Getting the _ProductTakeOffActivitiesAddPartial as Modal Form ends here. */
+        /* Ajax GET / Getting the _ProductEntryActivitiesAddPartial as Modal Form ends here. */
 
         /* Ajax POST / Posting the FormData as ProductActivitiesAddDto starts from here. */
 
@@ -71,7 +71,7 @@
             function (event) {
                 console.log(event);
                 event.preventDefault();
-                const form = $('#form-productTakeOffActivities-add');
+                const form = $('#form-productEntryActivities-add');
                 const actionUrl = form.attr('action');
                 const dataToSend = new FormData(form.get(0));
                 $.ajax({
@@ -126,16 +126,16 @@
 
     /* Ajax POST / Posting the FormData as ProductActivitiesDto ends here. */
 
-    /* Ajax GET / Getting the _ProductTakeOffActivitiesUpdatePartial as Modal Form starts from here. */
+    /* Ajax GET / Getting the _ProductEntryActivitiesUpdatePartial as Modal Form starts from here. */
     $(function () {
-        const url = '/ProductActivities/UpdateProductTakeOff/';
+        const url = '/ProductActivities/UpdateProductEntry/';
         const placeHolderDiv = $('#modalPlaceHolder');
         $(document).on('click',
             '.btn-update',
             function (event) {
                 event.preventDefault();
                 const id = $(this).attr('data-id');
-                $.get(url, { productTakeOffId: id }).done(function (data) {
+                $.get(url, { productEntryId: id }).done(function (data) {
                     console.log(data);
                     console.log(placeHolderDiv);
                     placeHolderDiv.html(data);
@@ -152,7 +152,7 @@
             function (event) {
                 event.preventDefault();
 
-                const form = $('#form-productTakeOffActivities-update');
+                const form = $('#form-productEntryActivities-update');
                 const actionUrl = form.attr('action');
                 const dataToSend = new FormData(form.get(0));
                 $.ajax({
@@ -205,7 +205,7 @@
 
     });
 
-    /* Ajax POST / Deleting a TakeOffactivities starts from here */
+    /* Ajax POST / Deleting a entryactivities starts from here */
 
     $(document).on('click',
         '.btn-delete',
@@ -213,10 +213,10 @@
             event.preventDefault();
             const id = $(this).attr('data-id');
             const tableRow = $(`[name="${id}"]`);
-            const TakeOffActivitiesName = tableRow.find('td:eq(0)').text();
+            const entryActivitiesName = tableRow.find('td:eq(0)').text();
             Swal.fire({
                 title: 'Silmek istediğinize emin misiniz?',
-                text: `${TakeOffActivitiesName} adlı ürün çıkışı silinicektir!`,
+                text: `${entryActivitiesName} adlı ürün girişi silinicektir!`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -228,14 +228,14 @@
                     $.ajax({
                         type: 'POST',
                         dataType: 'json',
-                        data: { productTakeOffId: id },
-                        url: '/ProductActivities/DeleteProductTakeOffActivities/',
+                        data: { productEntryId: id },
+                        url: '/ProductActivities/DeleteProductEntryActivities/',
                         success: function (data) {
                             const productActivitiesDto = jQuery.parseJSON(data);
                             if (productActivitiesDto.ResultStatus === 0) {
                                 Swal.fire(
                                     'Silindi!',
-                                    `${productActivitiesDto.ProductActivity.Name} adlı ürün çıkışı başarıyla silinmiştir.`,
+                                    `${productActivitiesDto.ProductActivity.Name} adlı ürün girişi başarıyla silinmiştir.`,
                                     'success'
                                 );
 

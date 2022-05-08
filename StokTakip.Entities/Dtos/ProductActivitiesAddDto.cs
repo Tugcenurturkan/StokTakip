@@ -27,7 +27,7 @@ namespace StokTakip.Entities.Dtos
         [DisplayName("Miktar")]
         [Required(ErrorMessage = "{0} boş geçilmemelidir.")]
         public int Amount { get; set; }
-        [DisplayName("Giriş Tarihi")]
+        [DisplayName("Tarih")]
         [Required(ErrorMessage = "{0} boş geçilmemelidir.")]
         public DateTime Date { get; set; }
         [DisplayName("Beden")]
@@ -37,5 +37,6 @@ namespace StokTakip.Entities.Dtos
         [Required(ErrorMessage = "{0} boş geçilmemelidir.")]
         public Guid ProductTypeId { get; set; }
         public ProductType ProductType { get; set; }
+        public int ActivityType { get; set; } // 1 giriş 2 çıkış
     }
 }

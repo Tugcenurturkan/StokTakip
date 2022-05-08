@@ -20,6 +20,8 @@ namespace StokTakip.Entities.Concrete
         public User User { get; set; }
         public ProductType ProductType { get; set; }
         public int ActivityType { get; set; } // 1 giriş 2 çıkış
+        public int Stock { get; set; }
+        public decimal Gain { get; set; }
 
     }
 }

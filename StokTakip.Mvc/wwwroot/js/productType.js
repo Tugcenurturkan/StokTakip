@@ -46,7 +46,7 @@
                 }
             }
         },
-        "columndefs": [
+        "columnDefs": [
             { "visible": false, "targets": 0 }
         ]
     });
@@ -54,7 +54,7 @@
 
     /* Ajax GET / Getting the _ProductTypeAddPartial as Modal Form starts from here. */
     $(function () {
-        const url = '/ProductDefinition/AddProductType/';
+        const url = '/ProductType/AddProductType/';
         const placeHolderDiv = $('#modalPlaceHolder');
         $('#btnAdd').click(function () {
             $.get(url).done(function (data) {
@@ -141,7 +141,7 @@
                         type: 'POST',
                         dataType: 'json',
                         data: { productTypeId: id },
-                        url: '/ProductDefinition/DeleteProductType/',
+                        url: '/ProductType/DeleteProductType/',
                         success: function (data) {
                             const productTypeDto = jQuery.parseJSON(data);
                             if (productTypeDto.ResultStatus === 0) {
@@ -171,7 +171,7 @@
 
     /* Ajax GET / Getting the _ProductTypeUpdatePartial as Modal Form starts from here. */
     $(function () {
-        const url = '/ProductDefinition/UpdateProductType/';
+        const url = '/ProductType/UpdateProductType/';
         const placeHolderDiv = $('#modalPlaceHolder');
         $(document).on('click',
             '.btn-update',
