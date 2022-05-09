@@ -1,3 +1,48 @@
-﻿<main id="js-page-content" role="main" class="page-content">
-    <h1>Stoktaki Ürünler</h1>
-</main>
+﻿@using StokTakip.Shared.Utilities.Results.ComplexTypes
+@model List<StokTakip.Entities.Dtos.StockActivitiesListDto>
+@{
+    Layout = "_Layout";
+    //ViewBag.Title = "Stok";
+}
+<div id="modalPlaceHolder" aria-hidden="true"></div>
+<div class="card mb-4 mt-2">
+    <div class="card-header"><i class="fas fa-table mr-1"></i>Stok</div>
+    <div class="card-body">
+        <div class="spinner-border" role="status" style="display:none;">
+            <span class="sr-only">Yükleniyor...</span>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered" id="stockActivities" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Barkod</th>
+                        <th>Giriş Miktarı</th>
+                        <th>Çıkış Miktarı</th>
+                        <th>Stoktaki Miktar</th>
+                        <th>Toplam Giriş Fiyatı</th>
+                        <th>Toplam Çıkış Fiyatı</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var stock in Model)
+                    {
+                        <tr>
+                            <td>@stock.Barcode</td>
+                            <td>@stock.StockEntryAmount</td>
+                            <td>@stock.StockTakeOutAmount</td>
+                            <td>@stock.StockAmount</td>
+                            <td>@stock.EntryPrice</td>
+                            <td>@stock.Gain</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/stockAcivities.js" type="application/ecmascript"></script>
+}

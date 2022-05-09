@@ -131,31 +131,24 @@ namespace StokTakip.Services.Concrete
                 return new DataResult<ProductActivitiesUpdateDto>(ResultStatus.Error, "Böyle bir ürün türü bulunamadı.", null);
             }
         }
-        public async Task<IDataResult<ProductActivitiesListDto>> GetAllProductsInStock()
+        public async Task<List<StockActivitiesListDto>> GetAllProductsInStock()
         {
+            var stockList = new List<StockActivitiesListDto>();
             var entryProducts = await _unitOfWork.ProductActivities.GetAllAsync(x => x.IsActive && !x.IsDeleted && x.ActivityType == 1);
             var groupedEntryProducts = entryProducts.GroupBy(x => x.Barcode);
-            //foreach (var entryProduct in groupedEntryProducts)
-            //{
-            //    var takeOffProducts = await _unitOfWork.ProductActivities.GetAllAsync(x => x.IsActive && !x.IsDeleted && x.ActivityType == 2 && x.Barcode == entryProduct.Barcode, x => x.ProductType);
-            //}
-
-
-
-
-
-
-
-
-            //if (products.Count > -1)
-            //{
-            //    return new DataResult<ProductActivitiesListDto>(ResultStatus.Success, new ProductActivitiesListDto
-            //    {
-            //        Products = products,
-            //        ResultStatus = ResultStatus.Success
-            //    });
-            //}
-            return new DataResult<ProductActivitiesListDto>(ResultStatus.Error, "Ürün Bulunamadı", null);
+            foreach (var entryProduct in groupedEntryProducts)
+            {
+                var stock = new StockActivitiesListDto();
+                stock.Barcode = entryProduct.Key;
+                stock.EntryPrice = entryProduct.Sum(x => x.Amount * x.Price);
+                stock.StockEntryAmount = entryProduct.Sum(x => x.Amount);
+                var takeOffProducts = await _unitOfWork.ProductActivities.GetAllAsync(x => x.IsActive && !x.IsDeleted && x.ActivityType == 2 && x.Barcode == entryProduct.Key);
+                stock.Gain = takeOffProducts.Sum(x => x.Amount * x.Price);
+                stock.StockTakeOutAmount = takeOffProducts.Sum(x => x.Amount);
+                stock.StockAmount = stock.StockEntryAmount - stock.StockTakeOutAmount;
+                stockList.Add(stock);
+            }
+            return stockList;
         }
     }
 }

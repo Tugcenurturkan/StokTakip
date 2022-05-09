@@ -16,10 +16,10 @@ namespace StokTakip.Mvc.Controllers
             _productActivitiesService = productActivitiesService;
             _productTypeService = productTypeService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var a = _productActivitiesService.GetAllProductsInStock();
-            return View();
+            var data = await _productActivitiesService.GetAllProductsInStock();
+            return View(data);
         }
     }
 }
