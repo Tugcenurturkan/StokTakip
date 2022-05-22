@@ -18,6 +18,9 @@ namespace StokTakip.Services.Abstract
         Task<IDataResult<ProductActivitiesDto>> Delete(Guid productDefinitionId);
         Task<IDataResult<ProductActivitiesUpdateDto>> GetProductActivityUpdateDto(Guid productDefinitionId);
         Task<List<StockActivitiesListDto>> GetAllProductsInStock();
+        Task<List<StockGraphDto>> GetAllProductsInStockGraphic();
+        Task<List<StockGraphDto>> GetAllTakeOutProductsInStockGraphic();
+
 
     }
 }

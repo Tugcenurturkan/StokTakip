@@ -1,226 +1,168 @@
 ﻿<main id="js-page-content" role="main" class="page-content">
-    <h1>DashBoard</h1>
-    <div class="row">
-        <div class="col-lg-12">
-            <div id="panel-1" class="panel">
-                @*<div class="panel-hdr">
-                    <h2>
-                        Marketing profits
-                    </h2>
-                </div>*@
-                <div class="panel-container show">
-                    <div class="panel-content bg-subtlelight-fade">
-                        <div id="js-checkbox-toggles" class="d-flex mb-3">
-                            @*<div class="custom-control custom-switch mr-2">
-                                <input type="checkbox" class="custom-control-input" name="gra-0" id="gra-0" checked="checked">
-                                <label class="custom-control-label" for="gra-0">Target Profit</label>
-                            </div>
-                            <div class="custom-control custom-switch mr-2">
-                                <input type="checkbox" class="custom-control-input" name="gra-1" id="gra-1" checked="checked">
-                                <label class="custom-control-label" for="gra-1">Actual Profit</label>
-                            </div>
-                            <div class="custom-control custom-switch mr-2">
-                                <input type="checkbox" class="custom-control-input" name="gra-2" id="gra-2" checked="checked">
-                                <label class="custom-control-label" for="gra-2">User Signups</label>
-                            </div>*@
-                        </div>
-                        <div id="flot-toggles" class="w-100 mt-4" style="height: 300px"></div>
-                    </div>
+    <div id="profitLossPanel" class="panel">
+        <div class="panel-hdr">
+            <div class="col-12">
+                <h5 class="float-left mt-1">Aylık Kâr - Zarar Grafiği</h5>
+                <div class="panel-toolbar float-right mt-2">
+                    <button class="btn btn-panel waves-effect waves-themed" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
+                </div>
+            </div>
+        </div>
+        <div class="panel-container show">
+            <div class="panel-content">
+                <div id="areaChart">
+                    <canvas style="width:100%; height:300px;"></canvas>
                 </div>
             </div>
         </div>
     </div>
+
 </main>
-<script src="~/SmartAdmin/dist/js/vendors.bundle.js"></script>
-<script src="~/SmartAdmin/dist/js/app.bundle.js"></script>
-<script src="~/SmartAdmin/dist/js/statistics/chartist/chartist.js"></script>
-<script>
-    var dataTargetProfit = [
-        [1354586000000, 153],
-        [1364587000000, 658],
-        [1374588000000, 198],
-        [1384589000000, 663],
-        [1394590000000, 801],
-        [1404591000000, 1080],
-        [1414592000000, 353],
-        [1424593000000, 749],
-        [1434594000000, 523],
-        [1444595000000, 258],
-        [1454596000000, 688],
-        [1464597000000, 364]
-    ]
-    var dataProfit = [
-        [1354586000000, 53],
-        [1364587000000, 65],
-        [1374588000000, 98],
-        [1384589000000, 83],
-        [1394590000000, 980],
-        [1404591000000, 808],
-        [1414592000000, 720],
-        [1424593000000, 674],
-        [1434594000000, 23],
-        [1444595000000, 79],
-        [1454596000000, 88],
-        [1464597000000, 36]
-    ]
-    var dataSignups = [
-        [1354586000000, 647],
-        [1364587000000, 435],
-        [1374588000000, 784],
-        [1384589000000, 346],
-        [1394590000000, 487],
-        [1404591000000, 463],
-        [1414592000000, 479],
-        [1424593000000, 236],
-        [1434594000000, 843],
-        [1444595000000, 657],
-        [1454596000000, 241],
-        [1464597000000, 341]
-    ]
-    var dataSet1 = [
-        [0, 10],
-        [100, 8],
-        [200, 7],
-        [300, 5],
-        [400, 4],
-        [500, 6],
-        [600, 3],
-        [700, 2]
-    ];
-    var dataSet2 = [
-        [0, 9],
-        [100, 6],
-        [200, 5],
-        [300, 3],
-        [400, 3],
-        [500, 5],
-        [600, 2],
-        [700, 1]
-    ];
-    $(document).ready(function () {
-        lineInterpolation();
-    });
-    /* flot toggle example */
-    var flot_toggle = function () {
-
-        var data = [
-            {
-                label: "Target Profit",
-                data: dataTargetProfit,
-                color: color.info._400,
-                bars:
-                {
-                    show: true,
-                    align: "center",
-                    barWidth: 30 * 30 * 60 * 1000 * 80,
-                    lineWidth: 0,
-                    /*fillColor: {
-                        colors: [color.primary._500, color.primary._900]
-                    },*/
-                    fillColor:
-                    {
-                        colors: [
-                            {
-                                opacity: 0.9
-                            },
-                            {
-                                opacity: 0.1
-                            }]
-                    }
-                },
-                highlightColor: 'rgba(255,255,255,0.3)',
-                shadowSize: 0
-            },
-            {
-                label: "Actual Profit",
-                data: dataProfit,
-                color: color.warning._500,
-                lines:
-                {
-                    show: true,
-                    lineWidth: 2
-                },
-                shadowSize: 0,
-                points:
-                {
-                    show: true
-                }
-            },
-            {
-                label: "User Signups",
-                data: dataSignups,
-                color: color.success._500,
-                lines:
-                {
-                    show: true,
-                    lineWidth: 2
-                },
-                shadowSize: 0,
-                points:
-                {
-                    show: true
-                }
-            }]
-
-        var options = {
-            grid:
-            {
-                hoverable: true,
-                clickable: true,
-                tickColor: 'rgba(0,0,0,0.05)',
-                borderWidth: 1,
-                borderColor: 'rgba(0,0,0,0.05)'
-            },
-            tooltip: true,
-            tooltipOpts:
-            {
-                cssClass: 'tooltip-inner',
-                defaultTheme: false
-            },
-            xaxis:
-            {
-                mode: "time",
-                tickColor: 'rgba(0,0,0,0.05)',
-            },
-            yaxes:
-            {
-                tickColor: 'rgba(0,0,0,0.05)',
-                tickFormatter: function (val, axis) {
-                    return "$" + val;
-                },
-                max: 1200
-            }
-
-        };
-
-        var plot2 = null;
-
-        function plotNow() {
-            var d = [];
-            $("#js-checkbox-toggles").find(':checkbox').each(function () {
-                if ($(this).is(':checked')) {
-                    d.push(data[$(this).attr("name").substr(4, 1)]);
-                }
-            });
-            if (d.length > 0) {
-                if (plot2) {
-                    plot2.setData(d);
-                    plot2.draw();
-                }
-                else {
-                    plot2 = $.plot($("#flot-toggles"), d, options);
-                }
-            }
-
-        };
-
-        $("#js-checkbox-toggles").find(':checkbox').on('change', function () {
-            plotNow();
+@section Scripts
+{
+    <script src="~/SmartAdmin/dist/js/statistics/chartjs/chartjs.bundle.js"></script>
+    <script>
+        $(document).ready(function () {
+            areaChart();
         });
-        plotNow()
-    }
-    flot_toggle();
-                /* flot toggle example -- end*/
-</script>
-
-
+        var areaChart = function () {
+            var entryUrl = "/Home/StockActivityGraphic/";
+            var takeOutUrl = "/Home/StockActivityTakeOutGraphic/";
+            var entryData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            var takeOutData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            var profitLoss = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            $.get(entryUrl).done(function (data) {
+                for (var i = 0; i < data.$values.length; i++) {
+                    for (var j = 0; j < entryData.length; j++) {
+                        if (data.$values[i].month == j) {
+                            entryData[j - 1] = data.$values[i].price;
+                        }
+                    }
+                }
+                $.get(takeOutUrl).done(function (getTakeOutData) {
+                    for (var i = 0; i < getTakeOutData.$values.length; i++) {
+                        for (var j = 0; j < takeOutData.length; j++) {
+                            if (getTakeOutData.$values[i].month == j) {
+                                takeOutData[j - 1] = getTakeOutData.$values[i].price;
+                            }
+                        }
+                    }
+                    for (var i = 0; i < profitLoss.length; i++) {
+                        profitLoss[i] = takeOutData[i] - entryData[i];
+                    }
+                    var config = {
+                        data:
+                        {
+                            labels: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
+                            datasets: [
+                                {
+                                    type: 'line',
+                                    label: "Ürün Girişi",
+                                    backgroundColor: 'rgba(136,106,181, 0.2)',
+                                    borderColor: color.primary._500,
+                                    pointBackgroundColor: color.primary._700,
+                                    pointBorderColor: 'rgba(0, 0, 0, 0)',
+                                    pointBorderWidth: 1,
+                                    borderWidth: 1,
+                                    pointRadius: 3,
+                                    pointHoverRadius: 4,
+                                    data: entryData,
+                                    fill: true
+                                },
+                                {
+                                    type: 'line',
+                                    label: "Ürün Çıkışı",
+                                    backgroundColor: 'rgba(29,201,183, 0.2)',
+                                    borderColor: color.success._500,
+                                    pointBackgroundColor: color.success._700,
+                                    pointBorderColor: 'rgba(0, 0, 0, 0)',
+                                    pointBorderWidth: 1,
+                                    borderWidth: 1,
+                                    pointRadius: 3,
+                                    pointHoverRadius: 4,
+                                    data: takeOutData,
+                                    fill: true
+                                },
+                                {
+                                    type: 'bar',
+                                    label: "Kâr - Zarar",
+                                    backgroundColor: 'rgba(29,201,183, 0.2)',
+                                    borderColor: color.success._500,
+                                    pointBackgroundColor: color.success._700,
+                                    pointBorderColor: 'rgba(0, 0, 0, 0)',
+                                    pointBorderWidth: 1,
+                                    borderWidth: 1,
+                                    pointRadius: 3,
+                                    pointHoverRadius: 4,
+                                    data: profitLoss,
+                                    fill: true
+                                }
+                            ]
+                        },
+                        options:
+                        {
+                            responsive: true,
+                            title:
+                            {
+                                display: false,
+                                text: 'Area Chart'
+                            },
+                            tooltips:
+                            {
+                                mode: 'index',
+                                intersect: false,
+                            },
+                            hover:
+                            {
+                                mode: 'nearest',
+                                intersect: true
+                            },
+                            scales:
+                            {
+                                xAxes: [
+                                    {
+                                        display: true,
+                                        scaleLabel:
+                                        {
+                                            display: false,
+                                            labelString: '6 months forecast'
+                                        },
+                                        gridLines:
+                                        {
+                                            display: true,
+                                            color: "#f2f2f2"
+                                        },
+                                        ticks:
+                                        {
+                                            beginAtZero: true,
+                                            fontSize: 11
+                                        }
+                                    }],
+                                yAxes: [
+                                    {
+                                        display: true,
+                                        scaleLabel:
+                                        {
+                                            display: false,
+                                            labelString: 'Profit margin (approx)'
+                                        },
+                                        gridLines:
+                                        {
+                                            display: true,
+                                            color: "#f2f2f2"
+                                        },
+                                        ticks:
+                                        {
+                                            beginAtZero: true,
+                                            fontSize: 11
+                                        }
+                                    }]
+                            }
+                        }
+                    };
+                    new Chart($("#areaChart > canvas").get(0).getContext("2d"), config);
+                });
+            });
+        }
+    </script>
+}

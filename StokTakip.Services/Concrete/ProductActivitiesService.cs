@@ -150,5 +150,41 @@ namespace StokTakip.Services.Concrete
             }
             return stockList;
         }
+
+        public async Task<List<StockGraphDto>> GetAllProductsInStockGraphic()
+        {
+            var stockList = new List<StockGraphDto>();
+            var entryProducts = await _unitOfWork.ProductActivities.GetAllAsync(x => x.IsActive && !x.IsDeleted && x.ActivityType == 1);
+            var groupedEntryProducts = entryProducts.GroupBy(x => x.Date.Month);
+            foreach (var item in groupedEntryProducts)
+            {
+                var stockGraph = new StockGraphDto();
+                stockGraph.Month = item.Key;
+                foreach (var item2 in item)
+                {
+                    stockGraph.Price += item2.Price * item2.Amount;
+                }
+                stockList.Add(stockGraph);
+            }
+            return stockList;
+        }
+
+        public async Task<List<StockGraphDto>> GetAllTakeOutProductsInStockGraphic()
+        {
+            var stockList = new List<StockGraphDto>();
+            var takeOutProducts = await _unitOfWork.ProductActivities.GetAllAsync(x => x.IsActive && !x.IsDeleted && x.ActivityType == 2);
+            var groupedTakeOutProducts = takeOutProducts.GroupBy(x => x.Date.Month);
+            foreach (var item in groupedTakeOutProducts)
+            {
+                var stockGraph = new StockGraphDto();
+                stockGraph.Month = item.Key;
+                foreach (var item2 in item)
+                {
+                    stockGraph.Price += item2.Price * item2.Amount;
+                }
+                stockList.Add(stockGraph);
+            }
+            return stockList;
+        }
     }
 }
