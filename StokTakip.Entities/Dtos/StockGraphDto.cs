@@ -10,5 +10,6 @@ namespace StokTakip.Entities.Dtos
     {
         public int Month { get; set; }
         public decimal Price { get; set; }
+        public int Stock { get; set; }
     }
 }

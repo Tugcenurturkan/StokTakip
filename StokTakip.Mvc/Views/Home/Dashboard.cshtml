@@ -16,6 +16,23 @@
             </div>
         </div>
     </div>
+    <div id="stockPanel" class="panel">
+        <div class="panel-hdr">
+            <div class="col-12">
+                <h5 class="float-left mt-1">Aylık Stok Grafiği</h5>
+                <div class="panel-toolbar float-right mt-2">
+                    <button class="btn btn-panel waves-effect waves-themed" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
+                </div>
+            </div>
+        </div>
+        <div class="panel-container show">
+            <div class="panel-content">
+                <div id="stockChart">
+                    <canvas style="width:100%; height:300px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </main>
 @section Scripts
@@ -23,9 +40,10 @@
     <script src="~/SmartAdmin/dist/js/statistics/chartjs/chartjs.bundle.js"></script>
     <script>
         $(document).ready(function () {
-            areaChart();
+            profitLossChart();
+            stockChart();
         });
-        var areaChart = function () {
+        var profitLossChart = function () {
             var entryUrl = "/Home/StockActivityGraphic/";
             var takeOutUrl = "/Home/StockActivityTakeOutGraphic/";
             var entryData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -161,6 +179,145 @@
                         }
                     };
                     new Chart($("#areaChart > canvas").get(0).getContext("2d"), config);
+                });
+            });
+        }
+        var stockChart = function () {
+            var entryUrl = "/Home/StockActivityGraphic/";
+            var takeOutUrl = "/Home/StockActivityTakeOutGraphic/";
+            var entryData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            var takeOutData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            var stock = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            $.get(entryUrl).done(function (data) {
+                for (var i = 0; i < data.$values.length; i++) {
+                    for (var j = 0; j < entryData.length; j++) {
+                        if (data.$values[i].month == j) {
+                            entryData[j - 1] = data.$values[i].stock;
+                        }
+                    }
+                }
+                $.get(takeOutUrl).done(function (getTakeOutData) {
+                    for (var i = 0; i < getTakeOutData.$values.length; i++) {
+                        for (var j = 0; j < takeOutData.length; j++) {
+                            if (getTakeOutData.$values[i].month == j) {
+                                takeOutData[j - 1] = getTakeOutData.$values[i].stock;
+                            }
+                        }
+                    }
+                    for (var i = 0; i < stock.length; i++) {
+                        stock[i] = entryData[i] - takeOutData[i];
+                    }
+                    var config = {
+                        data:
+                        {
+                            labels: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
+                            datasets: [
+                                {
+                                    type: 'line',
+                                    label: "Ürün Girişi",
+                                    backgroundColor: 'rgba(136,106,181, 0.2)',
+                                    borderColor: color.primary._500,
+                                    pointBackgroundColor: color.primary._700,
+                                    pointBorderColor: 'rgba(0, 0, 0, 0)',
+                                    pointBorderWidth: 1,
+                                    borderWidth: 1,
+                                    pointRadius: 3,
+                                    pointHoverRadius: 4,
+                                    data: entryData,
+                                    fill: true
+                                },
+                                {
+                                    type: 'line',
+                                    label: "Ürün Çıkışı",
+                                    backgroundColor: 'rgba(29,201,183, 0.2)',
+                                    borderColor: color.success._500,
+                                    pointBackgroundColor: color.success._700,
+                                    pointBorderColor: 'rgba(0, 0, 0, 0)',
+                                    pointBorderWidth: 1,
+                                    borderWidth: 1,
+                                    pointRadius: 3,
+                                    pointHoverRadius: 4,
+                                    data: takeOutData,
+                                    fill: true
+                                },
+                                {
+                                    type: 'bar',
+                                    label: "Stoktaki Ürünler",
+                                    backgroundColor: 'rgba(29,201,183, 0.2)',
+                                    borderColor: color.success._500,
+                                    pointBackgroundColor: color.success._700,
+                                    pointBorderColor: 'rgba(0, 0, 0, 0)',
+                                    pointBorderWidth: 1,
+                                    borderWidth: 1,
+                                    pointRadius: 3,
+                                    pointHoverRadius: 4,
+                                    data: stock,
+                                    fill: true
+                                }
+                            ]
+                        },
+                        options:
+                        {
+                            responsive: true,
+                            title:
+                            {
+                                display: false,
+                                text: 'Area Chart'
+                            },
+                            tooltips:
+                            {
+                                mode: 'index',
+                                intersect: false,
+                            },
+                            hover:
+                            {
+                                mode: 'nearest',
+                                intersect: true
+                            },
+                            scales:
+                            {
+                                xAxes: [
+                                    {
+                                        display: true,
+                                        scaleLabel:
+                                        {
+                                            display: false,
+                                            labelString: '6 months forecast'
+                                        },
+                                        gridLines:
+                                        {
+                                            display: true,
+                                            color: "#f2f2f2"
+                                        },
+                                        ticks:
+                                        {
+                                            beginAtZero: true,
+                                            fontSize: 11
+                                        }
+                                    }],
+                                yAxes: [
+                                    {
+                                        display: true,
+                                        scaleLabel:
+                                        {
+                                            display: false,
+                                            labelString: 'Profit margin (approx)'
+                                        },
+                                        gridLines:
+                                        {
+                                            display: true,
+                                            color: "#f2f2f2"
+                                        },
+                                        ticks:
+                                        {
+                                            beginAtZero: true,
+                                            fontSize: 11
+                                        }
+                                    }]
+                            }
+                        }
+                    };
+                    new Chart($("#stockChart > canvas").get(0).getContext("2d"), config);
                 });
             });
         }

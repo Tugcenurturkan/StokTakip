@@ -163,6 +163,7 @@ namespace StokTakip.Services.Concrete
                 foreach (var item2 in item)
                 {
                     stockGraph.Price += item2.Price * item2.Amount;
+                    stockGraph.Stock += item2.Amount;
                 }
                 stockList.Add(stockGraph);
             }
@@ -181,6 +182,7 @@ namespace StokTakip.Services.Concrete
                 foreach (var item2 in item)
                 {
                     stockGraph.Price += item2.Price * item2.Amount;
+                    stockGraph.Stock += item2.Amount;
                 }
                 stockList.Add(stockGraph);
             }
