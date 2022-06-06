@@ -77,9 +77,14 @@ namespace StokTakip.Services.Concrete
             return new DataResult<ProductActivitiesDto>(ResultStatus.Error, "Böyle Bir ürün bulunamadı", null);
         }
 
-        public async Task<IDataResult<ProductActivitiesListDto>> GetAllEntryActivities()
+        public async Task<IDataResult<ProductActivitiesListDto>> GetAllEntryActivities(DateTime? date)
         {
             var products = await _unitOfWork.ProductActivities.GetAllAsync(x => x.IsActive && !x.IsDeleted && x.ActivityType == 1, x => x.ProductType);
+            if (date != null)
+            {
+                var data = products.AsQueryable().Where(x => x.Date == date);
+                products = data.ToList();
+            }
             if (products.Count > -1) 
             {
                 return new DataResult<ProductActivitiesListDto>(ResultStatus.Success, new ProductActivitiesListDto
@@ -90,9 +95,14 @@ namespace StokTakip.Services.Concrete
             }
             return new DataResult<ProductActivitiesListDto>(ResultStatus.Error, "Ürün Bulunamadı", null);
         }
-        public async Task<IDataResult<ProductActivitiesListDto>> GetAllTakeOffActivities()
+        public async Task<IDataResult<ProductActivitiesListDto>> GetAllTakeOffActivities(DateTime? date)
         {
             var products = await _unitOfWork.ProductActivities.GetAllAsync(x => x.IsActive && !x.IsDeleted && x.ActivityType == 2, x => x.ProductType);
+            if (date != null)
+            {
+                var data = products.AsQueryable().Where(x => x.Date == date);
+                products = data.ToList();
+            }
             if (products.Count > -1)
             {
                 return new DataResult<ProductActivitiesListDto>(ResultStatus.Success, new ProductActivitiesListDto

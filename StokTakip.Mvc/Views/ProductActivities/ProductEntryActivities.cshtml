@@ -7,51 +7,85 @@
 @if (Model.ResultStatus == ResultStatus.Success)
 {
     <div id="modalPlaceHolder" aria-hidden="true"></div>
-    <div class="card mb-4 mt-2">
-        <div class="card-header"><i class="fas fa-table mr-1"></i>Stok Girişi</div>
-        <div class="card-body">
-            <div class="spinner-border" role="status" style="display:none;">
-                <span class="sr-only">Yükleniyor...</span>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-bordered" id="productEntryActivitiesTable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Barkod</th>
-                            <th>Ürün Adı</th>
-                            <th>Fiyat</th>
-                            <th>Miktar</th>
-                            <th>Beden</th>
-                            <th>Ürün Tipi</th>
-                            <th>Giriş Tarihi</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var product in Model.Products)
-                        {
-                            <tr name="@product.ID">
-                                <td>@product.ID</td>
-                                <td>@product.Barcode</td>
-                                <td>@product.Name</td>
-                                <td>@product.Price</td>
-                                <td>@product.Amount</td>
-                                <td>@product.Size</td>
-                                <td>@product.ProductType.Name</td>
-                                <td>@product.Date.ToShortDateString()</td>
-                                <td width="100px">
-                                    <button class="btn btn-primary btn-sm btn-update" data-id="@product.ID"><span class="fas fa-edit"></span></button>
-                                    <button class="btn btn-danger btn-sm btn-delete" data-id="@product.ID"><span class="fas fa-minus-circle"></span></button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+    <main id="js-page-content" role="main" class="page-content">
+        <div class="subheader">
+            <h1 class="subheader-title">
+                Stok Girişi
+            </h1>
+        </div>
+        <div class="row mt-3">
+            <div class="col-xl-12">
+                <div class="border-faded bg-faded p-3 ">
+                    <div class="form-group">
+                        <div class="form-group row">
+                            <div class="col-md-4 has-float-label">
+                                <label for="FilterDate" style="color:#2198f3;font-weight:bold;">Tarih Seçiniz</label>
+                                @if (Model.FilterDate != null)
+                                {
+                                    <input type="date" class="form-control" id="FilterDate" name="FilterDate" value="@Model.FilterDate.Value.ToString("yyyy-MM-dd")" />
+                                }
+                                else
+                                {
+                                    <input type="date" class="form-control" id="FilterDate" name="FilterDate" />
+                                }
+                            </div>
+                            <div class="col-md-4 has-float-label">
+                                <a href="javascript:void(0)" id="filterButton" class="btn btn-primary waves-effect waves-themed" style="margin-top:30px;" title="Filtrele" onclick="filterFunction()">
+                                    <i class="fas fa-search"></i>
+                                    <span id="filterButtonName"> Filtrele</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mb-4 mt-2">
+                        @*<div class="card-header"><i class="fas fa-table mr-1"></i>Stok Girişi</div>*@
+                        <div class="card-body">
+                            <div class="spinner-border" role="status" style="display:none;">
+                                <span class="sr-only">Yükleniyor...</span>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="productEntryActivitiesTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Barkod</th>
+                                            <th>Ürün Adı</th>
+                                            <th>Fiyat</th>
+                                            <th>Miktar</th>
+                                            <th>Beden</th>
+                                            <th>Ürün Tipi</th>
+                                            <th>Giriş Tarihi</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var product in Model.Products)
+                                        {
+                                            <tr name="@product.ID">
+                                                <td>@product.ID</td>
+                                                <td>@product.Barcode</td>
+                                                <td>@product.Name</td>
+                                                <td>@product.Price</td>
+                                                <td>@product.Amount</td>
+                                                <td>@product.Size</td>
+                                                <td>@product.ProductType.Name</td>
+                                                <td>@product.Date.ToShortDateString()</td>
+                                                <td width="100px">
+                                                    <button class="btn btn-primary btn-sm btn-update" data-id="@product.ID"><span class="fas fa-edit"></span></button>
+                                                    <button class="btn btn-danger btn-sm btn-delete" data-id="@product.ID"><span class="fas fa-minus-circle"></span></button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
 
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    </main>
 }
 @section Scripts
 {

@@ -11,5 +11,6 @@ namespace StokTakip.Entities.Dtos
     public class ProductActivitiesListDto : DtoGetBase
     {
         public IList<ProductActivity> Products { get; set; }
+        public DateTime? FilterDate { get; set; }
     }
 }

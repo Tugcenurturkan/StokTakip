@@ -11,8 +11,8 @@ namespace StokTakip.Services.Abstract
     public interface IProductActivitiesService
     {
         Task<IDataResult<ProductActivitiesDto>> GetById(Guid productDefinitionId);
-        Task<IDataResult<ProductActivitiesListDto>> GetAllEntryActivities();
-        Task<IDataResult<ProductActivitiesListDto>> GetAllTakeOffActivities();
+        Task<IDataResult<ProductActivitiesListDto>> GetAllEntryActivities(DateTime? date);
+        Task<IDataResult<ProductActivitiesListDto>> GetAllTakeOffActivities(DateTime? date);
         Task<IDataResult<ProductActivitiesDto>> Add(ProductActivitiesAddDto productDefinitionAddDto);
         Task<IDataResult<ProductActivitiesDto>> Update(ProductActivitiesUpdateDto productDefinitionUpdateDto);
         Task<IDataResult<ProductActivitiesDto>> Delete(Guid productDefinitionId);

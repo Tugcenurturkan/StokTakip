@@ -22,20 +22,22 @@ namespace StokTakip.Mvc.Controllers
             _productActivitiesService = productActivitiesService;
             _productTypeService = productTypeService;
         }
-        public async Task<IActionResult> ProductEntryActivities()
+        public async Task<IActionResult> ProductEntryActivities(DateTime? date)
         {
-            var result = await _productActivitiesService.GetAllEntryActivities();
+            var result = await _productActivitiesService.GetAllEntryActivities(date);
             if (result.ResultStatus == ResultStatus.Success)
             {
+                result.Data.FilterDate = date;
                 return View(result.Data);
             }
             return View();
         }
-        public async Task<IActionResult> ProductTakeOutActivities()
+        public async Task<IActionResult> ProductTakeOutActivities(DateTime? date)
         {
-            var result = await _productActivitiesService.GetAllTakeOffActivities();
+            var result = await _productActivitiesService.GetAllTakeOffActivities(date);
             if (result.ResultStatus == ResultStatus.Success)
             {
+                result.Data.FilterDate = date;
                 return View(result.Data);
             }
             return View();
@@ -180,7 +182,7 @@ namespace StokTakip.Mvc.Controllers
         }
         public async Task<JsonResult> GetAllProductEntryActivities()
         {
-            var result = await _productActivitiesService.GetAllEntryActivities();
+            var result = await _productActivitiesService.GetAllEntryActivities(null);
             var entryActivities = JsonSerializer.Serialize(result.Data, new JsonSerializerOptions
             {
                 ReferenceHandler = ReferenceHandler.Preserve
@@ -189,7 +191,7 @@ namespace StokTakip.Mvc.Controllers
         }
         public async Task<JsonResult> GetAllProductTakeOffActivities()
         {
-            var result = await _productActivitiesService.GetAllTakeOffActivities();
+            var result = await _productActivitiesService.GetAllTakeOffActivities(null);
             var takeOffActivities = JsonSerializer.Serialize(result.Data, new JsonSerializerOptions
             {
                 ReferenceHandler = ReferenceHandler.Preserve

@@ -257,3 +257,7 @@
             });
         });
 });
+function filterFunction() {
+    var pageDate = $("#FilterDate").val();
+    location.href = '/ProductActivities/ProductTakeOutActivities?date=' + pageDate;
+}
