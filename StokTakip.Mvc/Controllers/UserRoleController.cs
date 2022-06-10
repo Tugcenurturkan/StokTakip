@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using StokTakip.Data.Concrete.EntityFramework.Context;
 using StokTakip.Entities.Concrete;
 using StokTakip.Entities.Dtos;
 using StokTakip.Shared.Utilities.Results.ComplexTypes;
@@ -17,11 +19,13 @@ namespace StokTakip.Mvc.Controllers
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
         private readonly IMapper _mapper;
-        public UserRoleController(UserManager<User> userManager, RoleManager<Role> roleManager, IMapper mapper)
+        private readonly StokTakipContext _context;
+        public UserRoleController(UserManager<User> userManager, RoleManager<Role> roleManager, IMapper mapper, StokTakipContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _mapper = mapper;
+            _context = context;
         }
         public async Task<IActionResult> Index()
         {
@@ -53,47 +57,27 @@ namespace StokTakip.Mvc.Controllers
         {
             return PartialView("_UserRoleAddPartial");
         }
-        //[HttpPost]
-        //public async Task<IActionResult> Add(UserRoleAddDto userRoleAddDto)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var user = _mapper.Map<UserRole>(userRoleAddDto);
-        //        var result = await .CreateAsync(user, userAddDto.Password);
-        //        if (result.Succeeded)
-        //        {
-        //            var userAddAjaxModel = JsonSerializer.Serialize(new UserAddAjaxViewModel
-        //            {
-        //                UserDto = new UserDto
-        //                {
-        //                    ResultStatus = ResultStatus.Success,
-        //                    Message = $"{user.UserName} adlı kullanıcı başarıyla eklenmiştir.",
-        //                    User = user
-        //                },
-        //                UserAddPartial = await this.RenderViewToStringAsync("_UserAddPartial", userAddDto)
-        //            });
-        //            return Json(userAddAjaxModel);
-        //        }
-        //        else
-        //        {
-        //            foreach (var error in result.Errors)
-        //            {
-        //                ModelState.AddModelError("", error.Description);
-        //            }
-        //            var userAddAjaxErrorModel = JsonSerializer.Serialize(new UserAddAjaxViewModel
-        //            {
-        //                UserAddDto = userAddDto,
-        //                UserAddPartial = await this.RenderViewToStringAsync("_UserAddPartial", userAddDto)
-        //            });
-        //            return Json(userAddAjaxErrorModel);
-        //        }
-        //    }
-        //    var userAddAjaxModelStateModel = JsonSerializer.Serialize(new UserAddAjaxViewModel
-        //    {
-        //        UserAddDto = userAddDto,
-        //        UserAddPartial = await this.RenderViewToStringAsync("_UserAddPartial", userAddDto)
-        //    });
-        //    return Json(userAddAjaxModelStateModel);
-        //}
+        [HttpPost]
+        public async Task<IActionResult> Add(UserRoleAddDto userRoleAddDto)
+        {
+            var userRole = new UserRole();
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var user = await _userManager.FindByNameAsync(userRoleAddDto.UserName);
+                    var role = _roleManager.Roles.Where(x => x.Name == userRoleAddDto.RoleName).FirstOrDefault();
+                    userRole.UserId = user.Id;
+                    userRole.RoleId = role.Id;
+                    var result = await _context.UserRoles.AddAsync(userRole);
+                    _context.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            return Json(userRole) ;
+        }
     }
 }

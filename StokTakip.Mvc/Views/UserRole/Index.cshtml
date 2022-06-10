@@ -19,7 +19,7 @@
                         <tr>
                             <th>Kullanıcı</th>
                             <th>Rol</th>
-                            <th></th>
+                            @*<th></th>*@
                         </tr>
                     </thead>
                     <tbody>
@@ -28,10 +28,10 @@
                             <tr name="@item.Id">
                                 <td>@item.UserName</td>
                                 <td>@item.RoleName</td>
-                                <td width="100px">
+                                @*<td width="100px">
                                     <button class="btn btn-primary btn-sm btn-update" data-id="@item.Id"><span class="fas fa-edit"></span></button>
                                     <button class="btn btn-danger btn-sm btn-delete" data-id="@item.Id"><span class="fas fa-minus-circle"></span></button>
-                                </td>
+                                </td>*@
                             </tr>
                         }
 

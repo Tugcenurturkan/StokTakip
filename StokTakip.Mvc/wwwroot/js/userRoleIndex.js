@@ -72,6 +72,7 @@
         placeHolderDiv.on('click',
             '#btnSave',
             function (event) {
+                debugger;
                 event.preventDefault();
                 const form = $('#form-userRole-add');
                 const actionUrl = form.attr('action');
@@ -83,35 +84,7 @@
                     processData: false,
                     contentType: false,
                     success: function (data) {
-                        console.log(data);
-                        const userRoleAddAjaxModel = jQuery.parseJSON(data);
-                        console.log(userRoleAddAjaxModel);
-                        const newFormBody = $('.modal-body', userRoleAddAjaxModel.UserRoleAddPartial);
-                        placeHolderDiv.find('.modal-body').replaceWith(newFormBody);
-                        const isValid = newFormBody.find('[name="IsValid"]').val() === 'True';
-                        if (isValid) {
-                            placeHolderDiv.find('.modal').modal('hide');
-                            const newTableRow = dataTable.row.add([
-                                userRoleAddAjaxModel.UserRoleDto.Id,
-                                userRoleAddAjaxModel.UserRoleDto.User.UserName,
-                                userRoleAddAjaxModel.UserRoleDto.Role.Name,
-                                `<td>
-                                    <button class="btn btn-primary btn-sm btn-update" data-id="userRoleAddAjaxModel.UserRoleDto.Id"><span class="fas fa-edit"></span></button>
-                                    <button class="btn btn-danger btn-sm btn-delete" data-id="userRoleAddAjaxModel.UserRoleDto.Id"><span class="fas fa-minus-circle"></span></button>
-                                </td>`
-                            ]).node();
-                            const jqueryTableRow = $(newTableRow);
-                            jqueryTableRow.attr('name', `${userRoleAddAjaxModel.UserRoleDto.Id}`);
-                            dataTable.row(newTableRow).draw();
-                            toastr.success(`${userRoleAddAjaxModel.UserRoleDto.Message}`, 'Başarılı İşlem!');
-                        } else {
-                            let summaryText = "";
-                            $('#validation-summary > ul > li').each(function () {
-                                let text = $(this).text();
-                                summaryText = `*${text}\n`;
-                            });
-                            toastr.warning(summaryText);
-                        }
+                        location.reload();
                     },
                     error: function (err) {
                         console.log(err);

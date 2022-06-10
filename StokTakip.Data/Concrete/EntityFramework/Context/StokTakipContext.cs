@@ -16,7 +16,7 @@ namespace StokTakip.Data.Concrete.EntityFramework.Context
         DbSet<ProductType> ProductTypes { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-L9FD7BP\SQLEXPRESS;Initial Catalog=StokTakip;Integrated Security=True");
+            optionsBuilder.UseSqlServer(@"Data Source=.\SQLEXPRESS;Initial Catalog=StokTakip;Integrated Security=True");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
